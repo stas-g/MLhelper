@@ -12,7 +12,7 @@
 #'
 #' @examples
 
-lasso.betas <- function(x, scale = FALSE, nonzero = TRUE, lambdamin = FALSE, names = FALSE){
+lasso.betas <- function(x, scale = FALSE, nonzero = TRUE, lambdamin = FALSE, names = FALSE, order = TRUE){
   if(lambdamin == TRUE){
     b.parse <- coef(x, s = 'lambda.min')
     betas <- as.vector(b.parse)[-1]
@@ -22,7 +22,7 @@ lasso.betas <- function(x, scale = FALSE, nonzero = TRUE, lambdamin = FALSE, nam
     betas <- as.vector(b.parse)[-1]
     names(betas) <- rownames(b.parse)[-1]
   }
-  betas <- betas[order(abs(betas), decreasing = TRUE)]
+  if(order) betas <- betas[order(abs(betas), decreasing = TRUE)]
   if(nonzero == TRUE) betas <- betas[betas != 0]
   if(scale == TRUE) betas <- abs(betas)/sum(abs(betas))
   if(names == TRUE) return(names(betas))
